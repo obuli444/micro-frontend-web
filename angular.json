@@ -122,7 +122,7 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
+					"builder": "ngx-build-plus:browser",
 					"options": {
 						"outputPath": "dist/host-app",
 						"index": "projects/host-app/src/index.html",
@@ -139,7 +139,9 @@
 						"styles": [
 							"projects/host-app/src/styles.scss"
 						],
-						"scripts": []
+						"scripts": [],
+						"extraWebpackConfig": "projects/host-app/webpack.config.js",
+						"commonChunk": false
 					},
 					"configurations": {
 						"production": {
@@ -155,7 +157,8 @@
 									"maximumError": "4kb"
 								}
 							],
-							"outputHashing": "all"
+							"outputHashing": "all",
+							"extraWebpackConfig": "projects/host-app/webpack.prod.config.js"
 						},
 						"development": {
 							"buildOptimizer": false,
@@ -169,21 +172,28 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+					"builder": "ngx-build-plus:dev-server",
 					"configurations": {
-            "production": {
-              "buildTarget": "host-app:build:production"
+						"production": {
+							"buildTarget": "host-app:build:production",
+							"extraWebpackConfig": "projects/host-app/webpack.prod.config.js"
 						},
-            "development": {
-              "buildTarget": "host-app:build:development"
+						"development": {
+							"buildTarget": "host-app:build:development"
 						}
 					},
-					"defaultConfiguration": "development"
+					"defaultConfiguration": "development",
+					"options": {
+						"port": 4300,
+						"publicHost": "http://localhost:4300",
+						"extraWebpackConfig": "projects/host-app/webpack.config.js"
+					}
 				},
 				"extract-i18n": {
-					"builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "host-app:build"
+					"builder": "ngx-build-plus:extract-i18n",
+					"options": {
+						"buildTarget": "host-app:build",
+						"extraWebpackConfig": "projects/host-app/webpack.config.js"
 					}
 				},
 				"test": {
